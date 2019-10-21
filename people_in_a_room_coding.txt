@@ -1,0 +1,38 @@
+#define LDR_1 A0
+#define LDR_2 A1
+const int LDR_Min=950;
+
+bool LDR1=LOW;
+bool LDR2=LOW;
+int PeopleNumber=0;
+void setup()
+{
+  Serial.begin(9600);
+}
+
+void loop()
+{
+if(analogRead(LDR_1)>LDR_Min && analogRead(LDR_2)<LDR_Min && LDR_1==LOW && LDR_2==LOW)
+  LDR1=HIGH;
+if(analogRead(LDR_1)<LDR_Min && analogRead(LDR_2)>LDR_Min && LDR_1==HIGH && LDR_2==LOW)
+{
+  while(analogRead(LDR_2)<LDR_Min)
+  {}
+  PeopleNumber++;
+  Serial.println("People in the room are:"+(String)PeopleNumber);
+  LDR1=LOW;
+  LDR2=LOW;
+}
+  if(analogRead(LDR_1)>LDR_Min && analogRead(LDR_2)<LDR_Min && LDR_1==LOW && LDR_2==LOW)
+  LDR2=HIGH;
+if(analogRead(LDR_1)<LDR_Min && analogRead(LDR_2)>LDR_Min && LDR_1==LOW && LDR_2==HIGH)
+{
+  while(analogRead(LDR_1)<LDR_Min)
+  {}
+  PeopleNumber=PeopleNumber>0?PeopleNumber-1:0;
+  Serial.println("People in the room are:"+(String)PeopleNumber);
+  LDR2=LOW;
+  LDR1=LOW;
+}
+}
+  
